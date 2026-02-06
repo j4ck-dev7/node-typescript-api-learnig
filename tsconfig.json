@@ -1,5 +1,6 @@
 {
   "compilerOptions": { 
+    "types": ["node"],
     "target": "es2019", // Diz ao compilador a versão do javascript que irá compilar 
     "module": "node16",
     "moduleResolution": "node16",
