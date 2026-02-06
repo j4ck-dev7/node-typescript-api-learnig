@@ -1,0 +1,35 @@
+{
+  "name": "typescript-api-learning",
+  "version": "1.0.0",
+  "description": "Node.js Typescript API para aprendizagem",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "yarn build && node dist/src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/j4ck-dev7/node-typescript-api-learnig.git"
+  },
+  "keywords": [
+    "nodejs",
+    "typescript",
+    "api",
+    "gitactions"
+  ],
+  "author": "Jackson",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/j4ck-dev7/node-typescript-api-learnig/issues"
+  },
+  "homepage": "https://github.com/j4ck-dev7/node-typescript-api-learnig#readme",
+  "devDependencies": {
+    "@types/module-alias": "^2.0.4",
+    "@types/node": "^25.2.0",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "module-alias": "^2.3.3"
+  }
+}

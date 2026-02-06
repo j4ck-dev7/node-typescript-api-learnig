@@ -1,0 +1,40 @@
+{
+  "compilerOptions": { 
+    "target": "es2019", // Diz ao compilador a versão do javascript que irá compilar 
+    "module": "node16",
+    "moduleResolution": "node16",
+    "lib": ["es2019", "dom"], // Diz ao typescript quais bibliotecas incluir durante a compilação, es2019 para node e dom para APIs do navegador 
+    "sourceMap": true, // Gera o arquivo .map para facilitar o debug
+    "rootDir": ".", // Diretório raiz do projeto para a compilação
+    "outDir": "./dist", // Diretório de saída dos arquivos compilados
+    "strict": true,
+    "noImplicitAny": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "noImplicitThis": true,
+    "resolveJsonModule": true,
+    "alwaysStrict": true,
+    "removeComments": true,
+    "noImplicitReturns": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "paths": { // Este campo é utilizado para criar alias para os caminhos dos arquivos, facilitando a importação.
+      "@src/*": ["./src/*"],
+      "@test/*": ["./test/*"]
+    },
+    "rootDirs": [
+      "./src",
+      "./test"
+    ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": [ // Inclui os pastas e subpastas que serão compiladas
+    "./src/**/*.ts", 
+    "./test/**/*.ts"
+  ],
+  "exclude": [
+    "./node_modules/*",
+    "dist"
+  ]
+}
