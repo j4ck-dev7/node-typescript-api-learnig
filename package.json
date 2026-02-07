@@ -9,10 +9,10 @@
     "start:dev": "ts-node-dev 'src/index.ts'",
     "lint": "eslint ./src/test --ext .ts",
     "lint:fix": "eslint ./src/test --ext .ts --fix",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:functional": "jest --projects ./test --runInBand"
   },
   "repository": {
-    "type": "git", 
+    "type": "git",
     "url": "git+https://github.com/j4ck-dev7/node-typescript-api-learnig.git"
   },
   "keywords": [
@@ -28,11 +28,16 @@
   },
   "homepage": "https://github.com/j4ck-dev7/node-typescript-api-learnig#readme",
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/module-alias": "^2.0.4",
     "@types/node": "^25.2.0",
+    "@types/supertest": "^6.0.3",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
     "eslint": "^9.39.2",
+    "jest": "^30.2.0",
+    "supertest": "^7.2.2",
+    "ts-jest": "^29.4.6",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3"
   },
