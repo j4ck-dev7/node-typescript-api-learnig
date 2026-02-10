@@ -1,1 +1,1 @@
-console.log('Test from index.js')
+console.log('Test from index.js');
