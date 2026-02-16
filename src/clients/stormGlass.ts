@@ -49,8 +49,8 @@ export class StormGlass {
 
     private normalizeResponse(
         points: StormGlassForecastResponse
-    ): ForecastPoint[] {
-        return points.hours.filter(this.isValidPoint.bind(this)).map((point) => ({
+    ): ForecastPoint[] { // O bind(this) é a classe atual, o StormGlass
+        return points.hours.filter(this.isValidPoint.bind(this)).map((point) => ({ // bind() é um método que cria uma nova função com o contexto this
             swellDirection: point.swellDirection[this.stormGlassAPISource],
             swellHeight: point.swellHeight[this.stormGlassAPISource],
             swellPeriod: point.swellPeriod[this.stormGlassAPISource],
@@ -60,18 +60,23 @@ export class StormGlass {
             windDirection: point.windDirection[this.stormGlassAPISource],
             windSpeed: point.windSpeed[this.stormGlassAPISource],
         }));
-  }
+    }
 
-  private isValidPoint(point: Partial<stormGlassPoint>): boolean {
-    return !!(
-      point.time &&
-      point.swellDirection?.[this.stormGlassAPISource] &&
-      point.swellHeight?.[this.stormGlassAPISource] &&
-      point.swellPeriod?.[this.stormGlassAPISource] &&
-      point.waveDirection?.[this.stormGlassAPISource] &&
-      point.waveHeight?.[this.stormGlassAPISource] &&
-      point.windDirection?.[this.stormGlassAPISource] &&
-      point.windSpeed?.[this.stormGlassAPISource]
-    );
-  }
+  // Este Partial<T> é um utilitário que torna todos os campos de um objeto em tipos opcionais, assim criando um novo
+  // tipo onde cada campo pode ser ou não definida 
+    private isValidPoint(point: Partial<stormGlassPoint>): boolean {
+        return !!( // Converte o retorno em boolean
+            point.time &&
+            point.swellDirection?.[this.stormGlassAPISource] &&
+            point.swellHeight?.[this.stormGlassAPISource] &&
+            point.swellPeriod?.[this.stormGlassAPISource] &&
+            point.waveDirection?.[this.stormGlassAPISource] &&
+            point.waveHeight?.[this.stormGlassAPISource] &&
+            point.windDirection?.[this.stormGlassAPISource] &&
+            point.windSpeed?.[this.stormGlassAPISource]
+            // ?. = optional chaining (acessa só se existir)
+            // && = AND lógico (todos precisam ser verdadeiros)
+            // !! = converte para booleano (transforma qualquer valor em true ou false)
+        );
+    }
 }
