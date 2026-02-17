@@ -1,4 +1,4 @@
-import { AxiosStatic } from 'axios'
+import { AxiosError, AxiosStatic } from 'axios'
 import { InternalError } from '@src/utill/errors/internal-error'
 
 export interface stormGlassPointSource { // Especifica uma chave do tipo string com o seu valor do tipo number
@@ -37,6 +37,13 @@ export class ClientRequestError extends InternalError {
         const internalMessage = `Unexpected error when trying to communicate to StormGlass`
         super(`${internalMessage}: ${message}`)
     }
+};
+
+export class StormGlassResponseError extends InternalError{
+    constructor(message: string){
+        const internalMessage = 'Unexpected error returned by the StormGlass service';
+        super(`${internalMessage}: ${message}`)
+    }
 }
 
 export class StormGlass { 
@@ -62,7 +69,11 @@ export class StormGlass {
             ) 
             return this.normalizeResponse(response.data) // Sempre use o return 
         } catch (error){ // O error é desconhecido pelo typescript, ou seja ele não sabe se há propriedades nele
-            throw new ClientRequestError((error as Error).message) // Por isso é necessário afirmar ao typescript que este error
+            if((error as AxiosError).response && (error as AxiosError).response?.data) { // É necessário afirmar ao typescript que este erro
+                // vem do axios utilizando type assertion
+                throw new StormGlassResponseError(`Error: ${JSON.stringify((error as AxiosError).response?.data)} Code: ${(error as AxiosError).response?.status}`)
+            }
+            throw new ClientRequestError((error as Error).message) // (error) Por isso é necessário afirmar ao typescript que este error
             // é um Error com type assertion
             // Caso o error retorne null, corre o risco de quebrar a aplicação
         }
