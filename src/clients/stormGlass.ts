@@ -32,7 +32,7 @@ export interface ForecastPoint {
     swellPeriod: number
 }
 
-// Erro para aplicação (Não envia para o usuário) quando há algum erro interno
+// Erro ao comunicar com a api externa
 export class ClientRequestError extends InternalError {
     constructor(message: string) {
         const internalMessage = `Unexpected error when trying to communicate to StormGlass`
@@ -40,7 +40,7 @@ export class ClientRequestError extends InternalError {
     }
 };
 
-// Erro da api quando houve falha
+// Erro retornado pela api quando houve falha
 export class StormGlassResponseError extends InternalError{
     constructor(message: string){
         const internalMessage = 'Unexpected error returned by the StormGlass service';
