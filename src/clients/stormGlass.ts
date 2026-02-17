@@ -1,4 +1,5 @@
 import { AxiosStatic } from 'axios'
+import { InternalError } from '@src/utill/errors/internal-error'
 
 export interface stormGlassPointSource { // Especifica uma chave do tipo string com o seu valor do tipo number
     [key: string] : number
@@ -31,6 +32,13 @@ export interface ForecastPoint {
     swellPeriod: number
 }
 
+export class ClientRequestError extends InternalError {
+    constructor(message: string) {
+        const internalMessage = `Unexpected error when trying to communicate to StormGlass`
+        super(`${internalMessage}: ${message}`)
+    }
+}
+
 export class StormGlass { 
     // O readonly serve para ter um dado fixo
     readonly stormGlassAPIParams = 
@@ -43,15 +51,21 @@ export class StormGlass {
     // com protected (clases novas não podem) diferentemente do privateclasses
 
     public async fetchPoints(lat: number, lng: number): Promise<ForecastPoint[]> { // É recomendado que todas as funções sejam tipadas, dizendo o tipo dos argumentos e o tipo de retorno.
-        const response = await this.request.get<StormGlassForecastResponse>(
+        try {
+            const response = await this.request.get<StormGlassForecastResponse>(
             `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}`,
             {
                 headers: {
                     Authorization: 'fake-token'
                 }
             }
-        ) 
-        return this.normalizeResponse(response.data) // Sempre use o return 
+            ) 
+            return this.normalizeResponse(response.data) // Sempre use o return 
+        } catch (error){ // O error é desconhecido pelo typescript, ou seja ele não sabe se há propriedades nele
+            throw new ClientRequestError((error as Error).message) // Por isso é necessário afirmar ao typescript que este error
+            // é um Error com type assertion
+            // Caso o error retorne null, corre o risco de quebrar a aplicação
+        }
     }
 
     private normalizeResponse(
