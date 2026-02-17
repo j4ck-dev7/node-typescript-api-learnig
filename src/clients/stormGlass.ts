@@ -32,14 +32,15 @@ export interface ForecastPoint {
 }
 
 export class StormGlass { 
+    // O readonly serve para ter um dado fixo
     readonly stormGlassAPIParams = 
      'swellHeight,swellDirection,windSpeed,swellPeriod,waveDirection,windDirection,waveHeight';
     readonly stormGlassAPISource = 'noaa';
 
     // O constructor é necessário para declarar e receber a dependência com tipo correto, permitindo que o TypeScript valide o código 
     // e que frameworks façam injeção automática.
-    constructor(protected request: AxiosStatic){} // O protected pode ser acessado por outras classes que herdam a classes 
-    // com protected (clases novas não podem) diferentemente do private
+    constructor(protected request: AxiosStatic){} // O protected pode ser acessado por outras  que herdam a classes 
+    // com protected (clases novas não podem) diferentemente do privateclasses
 
     public async fetchPoints(lat: number, lng: number): Promise<ForecastPoint[]> { // É recomendado que todas as funções sejam tipadas, dizendo o tipo dos argumentos e o tipo de retorno.
         const response = await this.request.get<StormGlassForecastResponse>(
