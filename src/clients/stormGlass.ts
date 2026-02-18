@@ -1,5 +1,6 @@
 import { AxiosError, AxiosStatic } from 'axios'
 import { InternalError } from '@src/utill/errors/internal-error'
+import config, { IConfig } from 'config'
 
 export interface stormGlassPointSource { // Especifica uma chave do tipo string com o seu valor do tipo number
     [key: string] : number
@@ -48,6 +49,9 @@ export class StormGlassResponseError extends InternalError{
     }
 }
 
+// Aqui recupera os objetos definidos no config/default.json | test.json para usar suas propriedades
+const stormGlassResourceConfig : IConfig = config.get('App.resources.StormGlass');
+
 export class StormGlass { 
     // O readonly serve para ter um dado fixo
     readonly stormGlassAPIParams = 
@@ -62,10 +66,10 @@ export class StormGlass {
     public async fetchPoints(lat: number, lng: number): Promise<ForecastPoint[]> { // É recomendado que todas as funções sejam tipadas, dizendo o tipo dos argumentos e o tipo de retorno.
         try {
             const response = await this.request.get<StormGlassForecastResponse>(
-            `https://api.stormglass.io/v2/weather/point?lat=${lat}&lng=${lng}&params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}`,
+            `${stormGlassResourceConfig.get('apiUrl')}/weather/point?lat=${lat}&lng=${lng}&params=${this.stormGlassAPIParams}&source=${this.stormGlassAPISource}`,
             {
                 headers: {
-                    Authorization: 'fake-token'
+                    Authorization: stormGlassResourceConfig.get('apiToken')
                 }
             }
             ) 
