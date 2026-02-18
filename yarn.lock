@@ -814,6 +814,11 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/config@^3.3.5":
+  version "3.3.5"
+  resolved "https://registry.yarnpkg.com/@types/config/-/config-3.3.5.tgz#91f0a52b10212b9c4254fb0bbc4bedd77cd389b8"
+  integrity sha512-itq2HtXQBrNUKwMNZnb9mBRE3T99VYCdl1gjST9rq+9kFaB1iMMGuDeZnP88qid73DnpAMKH9ZolqDpS1Lz7+w==
+
 "@types/connect@*":
   version "3.4.38"
   resolved "https://registry.yarnpkg.com/@types/connect/-/connect-3.4.38.tgz#5ba7f3bc4fbbdeaff8dded952e5ff2cc53f8d858"
@@ -1591,6 +1596,13 @@ concat-map@0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/concat-map/-/concat-map-0.0.1.tgz#d8a96bd77fd68df7793a73036a3ba0d5405d477b"
   integrity sha512-/Srv4dswyQNBfohGpz9o6Yb3Gz3SrUDqBH5rTuhGR7ahtlbYKnVxw2bCFMRljaA7EXHaXZ8wsHdodFvbkhKmqg==
+
+config@^4.3.0:
+  version "4.3.0"
+  resolved "https://registry.yarnpkg.com/config/-/config-4.3.0.tgz#3310b972ac785e8124ec891d1cce81f767bf4561"
+  integrity sha512-nY/JbYPBxOCTC+Kj9dUf21t49VxwsL6GXRsAxlTY9N6MBTx/6TBQgT2t5PsAY+XUCMCNudARJPevUZeN3NhyHQ==
+  dependencies:
+    json5 "^2.2.3"
 
 content-disposition@^1.0.0:
   version "1.0.1"
