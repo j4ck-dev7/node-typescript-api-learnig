@@ -76,7 +76,7 @@ export class StormGlass {
             ) 
             return this.normalizeResponse(response.data) // Sempre use o return 
         } catch (error){ // O error é desconhecido pelo typescript, ou seja ele não sabe se há propriedades nele
-            if((error as AxiosError).response && (error as AxiosError).response?.data) { // É necessário afirmar ao typescript que este erro
+            if(HTTPUtil.Request.isRequestError(error as AxiosError)) { // É necessário afirmar ao typescript que este erro
                 // vem do axios utilizando type assertion
                 throw new StormGlassResponseError(`Error: ${JSON.stringify((error as AxiosError).response?.data)} Code: ${(error as AxiosError).response?.status}`)
             }
