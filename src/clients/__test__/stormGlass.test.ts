@@ -11,10 +11,11 @@ import stormGlassNormalized3HoursFixture from '@test/fixtures/stormglass_normali
 jest.mock('@src/utill/request')
 
 describe('StormGlass client', () => {
+    // Mocka todos os métodos da instância
     // é um type cast que diz ao TypeScript que axios é um mock do Jest, possibilitando testes sem fazer requisições reais.
     // Este padrão é necessário em bibliotecas que fazem chamadas de api, acessa bancos de dados, serviços externos e envio de emails
     const mockedRequest = new HTTPUtil.Request() as jest.Mocked<HTTPUtil.Request> //Permite o uso do expect, toHaveBeenCalledWith e controle de erros
-    const MockedRequestClass = HTTPUtil.Request as jest.Mocked<typeof HTTPUtil.Request>
+    const MockedRequestClass = HTTPUtil.Request as jest.Mocked<typeof HTTPUtil.Request> // Mocka toda a classe
     test('should return the normalized forecast from the StormGlass service', async () => {
         const lat = -33.792726;
         const lng = 151.289824;
