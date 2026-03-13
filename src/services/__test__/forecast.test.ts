@@ -87,8 +87,15 @@ describe('Forecast Service', () => {
         ];
 
         const forecast = new Forecast(mockedStormGlassService); // No uso de classes, é necessário que a classe testada comece com new. Caso o constructor esteja
-        // inicializando uma outra classe, é necessário que dentro dos parenteses esteja a classe iniciando com o new
+        // inicializando uma outra classe, é necessário que dentro dos parenteses esteja a classe iniciando com o new (new class(new class()))
         const beachesWithList = await forecast.processForecastForBeaches(beaches); // o processForecastForBeaches é uma propriedade da classe Forecast
         expect(beachesWithList).toEqual(expectedResponse);
     });
+
+    test('should return an empty list if no beaches are provided', async () => {
+        const forecast = new Forecast();
+        const response = await forecast.processForecastForBeaches([]);
+
+        expect(response).toEqual([])
+    })
 });
