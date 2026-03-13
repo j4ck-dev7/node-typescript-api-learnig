@@ -5,10 +5,13 @@ import { Beach, BeachPosition, Forecast } from '../forecast'
 jest.mock('@src/clients/stormGlass');
 
 describe('Forecast Service', () => {
+    const mockedStormGlassService = new StormGlass() as jest.Mocked<StormGlass>;
     test('should return the forecast for a list of beaches', async () => {
-        StormGlass.prototype.fetchPoints = jest.fn().mockResolvedValue(stormGlassNormalizedResponse) // Esta forma de mockar uma classe é ruim, por não ter como tipar.
+        // StormGlass.prototype.fetchPoints = jest.fn().mockResolvedValue(stormGlassNormalizedResponse) // Esta forma de mockar uma classe é ruim, por não ter como tipar.
         // Esta forma não mock a classe, e sim modifica o protótipo da classe diretamente. Neste caso o typescript não consegue saber os tipos do jest.fn()
         // assim ficando genérico, perdendo o autocompletar e validação de tipos.
+
+        mockedStormGlassService.fetchPoints.mockResolvedValue(stormGlassNormalizedResponse);
 
         const beaches: Beach[] = [
             {
@@ -83,7 +86,7 @@ describe('Forecast Service', () => {
             }
         ];
 
-        const forecast = new Forecast(new StormGlass()); // No uso de classes, é necessário que a classe testada comece com new. Caso o constructor esteja
+        const forecast = new Forecast(mockedStormGlassService); // No uso de classes, é necessário que a classe testada comece com new. Caso o constructor esteja
         // inicializando uma outra classe, é necessário que dentro dos parenteses esteja a classe iniciando com o new
         const beachesWithList = await forecast.processForecastForBeaches(beaches); // o processForecastForBeaches é uma propriedade da classe Forecast
         expect(beachesWithList).toEqual(expectedResponse);
