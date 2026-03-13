@@ -1,4 +1,5 @@
 import { StormGlass, ForecastPoint } from "@src/clients/stormGlass";
+import { InternalError } from "@src/utill/errors/internal-error";
 
 export enum BeachPosition {
     S = 'S',
@@ -15,6 +16,12 @@ export interface Beach {
     user: string;
 };
 
+export class ForecastProcessingError extends InternalError {
+    constructor(message: string) {
+        super(`Unexpected error during the forecast processing: ${message}`)
+    }
+}
+
 export interface TimeForecast {
     time: string;
     forecast: BeachForecast[]
@@ -28,25 +35,33 @@ export class Forecast {
 
     public async processForecastForBeaches(beaches: Beach[]): Promise<TimeForecast[]>{
         const pointsWithCorrectSource: BeachForecast[] = [];
-        for(const beach of beaches){
+        try {
+            for(const beach of beaches){
             const points = await this.stormGlass.fetchPoints(beach.lat, beach.lng);
-            const enrichedBeachData = points.map((e) => ({
-                ...{ // Concatena este objeto com outro objeto (e)
-                    lat: beach.lat,
-                    lng: beach.lng,
-                    name: beach.name,
-                    position: beach.position,
-                    rating: 1
-                },
-                ...e
-            }));
-
+            const enrichedBeachData = this.enrichedBeachData(points, beach)
             pointsWithCorrectSource.push(...enrichedBeachData) // Inclui o enrichedBeachData no array pointsWithCorrectSource, mas tem um porém, se o enrichedBeachData
             // estiver sem o spread operator (...) o array pointsWithCorrectSource receberá um array dentro de outro array, o que é um erro
         }
 
         return this.mapForecastByTime(pointsWithCorrectSource);
+        } catch (error) {
+            throw new ForecastProcessingError((error as Error).message);
+        }
+        
     };
+
+    private enrichedBeachData (points: ForecastPoint[], beach: Beach): BeachForecast[] {
+        return points.map((e) => ({
+            ...{ // Concatena este objeto com outro objeto (e)
+                lat: beach.lat,
+                lng: beach.lng,
+                name: beach.name,
+                position: beach.position,
+                rating: 1
+            },
+            ...e
+        }));
+    }
 
     private mapForecastByTime(forecast: BeachForecast[]): TimeForecast[] {
         const forecastByTime: TimeForecast[] = [];
